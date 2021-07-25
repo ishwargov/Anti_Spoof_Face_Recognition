@@ -7,9 +7,15 @@ import numpy as np
 from sklearn.svm import SVC
 import pandas as pd
 from joblib import dump
+import json
+from keras.models import load_model
 
-from app import num_of_classes,class_names,facenet,data
+with open('./data/train_data.json') as td:
+    train_data = json.load(td)
+num_of_classes = train_data['num_of_classes']
+class_names = train_data['class_names']
 
+facenet = load_model('./data/facenet_keras.h5')
 
 def get_face(filename):
   img = Image.open(filename)
