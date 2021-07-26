@@ -1,12 +1,16 @@
 from joblib import load
 from train import get_face,get_embedding
-from app import class_names
 import numpy as np
-model = load('ckpt_model.joblib')
+import json
+model = load('./data/ckpt_model.joblib')
 
-def predict(file_name):
+with open('./data/train_data.json') as td:
+    train_data = json.load(td)
+num_of_classes = train_data['num_of_classes']
+class_names = train_data['class_names']
+
+def predict_file(file_name):
     face = get_embedding(get_face(file_name))
-    preds = model.predict_proba(face)
+    preds = model.predict_proba(face.reshape(1,128))
     preds2 = np.argmax(preds.reshape(-1))
-    print(preds)
-    print(preds2,class_names[preds2])
+    return(preds2,class_names[str(preds2)])

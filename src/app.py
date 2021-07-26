@@ -1,9 +1,10 @@
 import json
 from keras.models import load_model
 from flask_ngrok import run_with_ngrok
+from flask import *
 import pandas as pd
 import os
-from flask import Flask
+from predict import predict_file
 app = Flask(__name__)
 run_with_ngrok(app) 
 
@@ -18,7 +19,19 @@ data = pd.read_csv('./data/train.csv')
 from train import update_dataset
 @app.route("/")
 def home():
-    return ("<p>Face Recognition</p>")
+    return (render_template('home.html'))
+
+@app.route("/upload")
+def upload():
+    return( render_template('upload.html'))
+
+@app.route('/predict', methods = ['POST'])  
+def predict():  
+    if request.method == 'POST':  
+        f = request.files['file']  
+        f.save(f.filename)  
+        preds = predict_file(f.filename)
+        return render_template("predict.html", filename=f.filename, name = preds[1])  
 
 if __name__ == '__main__':
     app.run()
