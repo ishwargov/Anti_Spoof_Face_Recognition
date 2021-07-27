@@ -16,7 +16,7 @@ class_names = train_data['class_names']
 facenet = load_model('./data/facenet_keras.h5')
 data = pd.read_csv('./data/train.csv')
 
-app.config['UPLOAD_FOLDER'] = './templates'
+app.config['UPLOAD_FOLDER'] = './static/uploads'
 
 from train import update_dataset
 @app.route("/")
@@ -30,10 +30,11 @@ def upload():
 @app.route('/predict', methods = ['POST'])  
 def predict():  
     if request.method == 'POST':  
-        f = request.files['file']  
-        f.save(f.filename)  
-        preds = predict_file(f.filename)
-        return render_template("predict.html", filename=f.filename, name = preds[1])  
+        f = request.files['file'] 
+        path = os.path.join(app.config['UPLOAD_FOLDER'],f.filename) 
+        f.save(path)  
+        preds = predict_file(path)
+        return render_template("predict.html", filename=path, name = preds[1])  
 
 if __name__ == '__main__':
     app.run()
