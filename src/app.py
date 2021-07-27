@@ -34,7 +34,7 @@ def predict():
         path = os.path.join(app.config['UPLOAD_FOLDER'],f.filename) 
         f.save(path)  
         preds = predict_file(path)
-        return render_template("predict.html", filename=path, name = preds[1])  
+        return render_template("predict.html", filename=path, name = preds[1], confidence = preds[2])  
 
 if __name__ == '__main__':
     app.run()

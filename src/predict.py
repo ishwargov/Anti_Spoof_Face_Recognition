@@ -13,4 +13,4 @@ def predict_file(file_name):
     face = get_embedding(get_face(file_name))
     preds = model.predict_proba(face.reshape(1,128))
     preds2 = np.argmax(preds.reshape(-1))
-    return(preds2,class_names[str(preds2)])
+    return(preds2,class_names[str(preds2)],preds[preds2])
