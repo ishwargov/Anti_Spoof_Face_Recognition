@@ -8,17 +8,17 @@ from predict import predict_file
 app = Flask(__name__)
 run_with_ngrok(app) 
 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' 
+
 with open('./data/train_data.json') as td:
     train_data = json.load(td)
 num_of_classes = train_data['num_of_classes']
 class_names = train_data['class_names']
 
-facenet = load_model('./data/facenet_keras.h5')
-data = pd.read_csv('./data/train.csv')
+#facenet = load_model('./data/facenet_keras.h5')
 
 app.config['UPLOAD_FOLDER'] = './static/uploads'
 
-from train import update_dataset
 @app.route("/")
 def home():
     return (render_template('home.html'))
@@ -34,7 +34,7 @@ def predict():
         path = os.path.join(app.config['UPLOAD_FOLDER'],f.filename) 
         f.save(path)  
         preds = predict_file(path)
-        return render_template("predict.html", filename=path, name = preds[1], confidence = preds[2])  
+        return render_template("predict.html", filename=path, name = preds[1], confidence = str(preds[2]*100)+"%")  
 
 if __name__ == '__main__':
     app.run()
