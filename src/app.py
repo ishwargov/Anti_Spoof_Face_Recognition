@@ -16,6 +16,8 @@ class_names = train_data['class_names']
 facenet = load_model('./data/facenet_keras.h5')
 data = pd.read_csv('./data/train.csv')
 
+app.config['UPLOAD_FOLDER'] = './templates'
+
 from train import update_dataset
 @app.route("/")
 def home():
