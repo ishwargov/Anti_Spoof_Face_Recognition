@@ -4,6 +4,7 @@ from flask import *
 import pandas as pd
 import os
 from predict import predict_file
+from train import update_dataset,train
 app = Flask(__name__)
 run_with_ngrok(app) 
 
@@ -44,7 +45,16 @@ def train():
     if request.method == 'POST':  
         f = request.files['file'] 
         path = os.path.join(app.config['UPLOAD_FOLDER'],f.filename) 
-        f.save(path)    
+        f.save(path)
+        dataset = pd.read_csv('./data/train.csv')
+        os.system('unzip '+path+' -d '+path[:-4])
+        num_of_files = len(os.listdir(path[:-4]))
+        dataset = update_dataset(dataset,path[:-4],f.filename[:-4])
+        dataset.to_csv('./data/train.csv')
+        os.system('rm -rf '+path)
+        os.system('rm -rf '+path[:-4])
+        train(dataset)
+        return(f'<p>Successfully Trained {num_of_files} , added 1 class. </p>')
 
 if __name__ == '__main__':
     app.run()

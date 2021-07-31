@@ -24,8 +24,8 @@ def predict_file(file_name):
     img = np.asarray(img)
     spoof_preds = spoof_model.predict(img.reshape(1,160,160,3)).reshape(-1)
     predictions = {}
-    predictions['Class Name'] = class_names[preds2]
-    predictions['Confidence'] = preds[preds2]
+    predictions['Class Name'] = class_names[str(preds2)]
+    predictions['Confidence'] = preds[int(preds2)]
     predictions['Real'] = spoof_preds[0]
     predictions['Spoof'] = spoof_preds[1]
     return(predictions)
