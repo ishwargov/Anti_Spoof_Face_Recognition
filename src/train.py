@@ -9,6 +9,7 @@ import pandas as pd
 from joblib import dump
 import json
 from keras.models import load_model
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' 
 
 with open('./data/train_data.json') as td:
     train_data = json.load(td)
