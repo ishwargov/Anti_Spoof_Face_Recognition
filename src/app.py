@@ -4,7 +4,7 @@ from flask import *
 import pandas as pd
 import os
 from predict import predict_file
-from train import update_dataset,train
+from train import update_dataset,train_new
 app = Flask(__name__)
 run_with_ngrok(app) 
 
@@ -53,7 +53,7 @@ def train():
         dataset.to_csv('./data/train.csv')
         os.system('rm -rf '+path)
         os.system('rm -rf '+path[:-4])
-        train(dataset)
+        train_new(dataset)
         return(f'<p>Successfully Trained {num_of_files} , added 1 class. </p>')
 
 if __name__ == '__main__':

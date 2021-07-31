@@ -49,6 +49,7 @@ def get_embedding(face):
 def update_dataset(data,folder,class_name):
   global num_of_classes
   global class_names
+  global train_data
   faces = get_files(folder)
   face_emb = [get_embedding(fc) for fc in faces]
   face_emb = np.array(face_emb)
@@ -57,11 +58,15 @@ def update_dataset(data,folder,class_name):
   out.fill(num_of_classes)
   class_names[num_of_classes] = class_name
   num_of_classes += 1
+  train_data['num_of_classes'] = num_of_classes
+  train_data['class_names'] = class_names
+  with open('./data/train_data.json','w') as of:
+    json.dump(train_data,of)
   dat = np.concatenate([face_emb,out],axis=1)
   data = data.append(pd.DataFrame(dat, columns=[str(i) for i in np.arange(1,130)]), ignore_index=True)
   return data
 
-def train(data):
+def train_new(data):
     df = data.to_numpy()
     x = df[:,:128]
     y = df[:,128]
