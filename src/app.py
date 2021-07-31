@@ -1,5 +1,4 @@
 import json
-from keras.models import load_model
 from flask_ngrok import run_with_ngrok
 from flask import *
 import pandas as pd
@@ -27,6 +26,10 @@ def home():
 def upload():
     return( render_template('upload.html'))
 
+@app.route("/upload_data")
+def upload_data():
+    return( render_template('upload_data.html'))
+
 @app.route('/predict', methods = ['POST'])  
 def predict():  
     if request.method == 'POST':  
@@ -34,7 +37,14 @@ def predict():
         path = os.path.join(app.config['UPLOAD_FOLDER'],f.filename) 
         f.save(path)  
         preds = predict_file(path)
-        return render_template("predict.html", filename=path, name = preds[1], confidence = str(preds[2]*100)+"%")  
+        return render_template("predict.html", filename=path, pred = preds)  
+
+@app.route('/train', methods = ['POST'])  
+def train(): 
+    if request.method == 'POST':  
+        f = request.files['file'] 
+        path = os.path.join(app.config['UPLOAD_FOLDER'],f.filename) 
+        f.save(path)    
 
 if __name__ == '__main__':
     app.run()
