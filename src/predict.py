@@ -21,11 +21,11 @@ def predict_file(file_name):
     preds2 = np.argmax(preds.reshape(-1))
     img = Image.open(file_name)
     img = img.resize((160,160))
-    img = np.asarray(img)
+    img = np.asarray(img)/255
     spoof_preds = spoof_model.predict(img.reshape(1,160,160,3)).reshape(-1)
     predictions = {}
     predictions['Class Name'] = class_names[str(preds2)]
     predictions['Confidence'] = preds[int(preds2)]
-    predictions['Real'] = spoof_preds[0]
-    predictions['Spoof'] = spoof_preds[1]
+    predictions['Real'] = spoof_preds[1]
+    predictions['Spoof'] = spoof_preds[0]
     return(predictions)

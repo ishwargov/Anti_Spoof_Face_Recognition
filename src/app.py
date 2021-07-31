@@ -54,7 +54,7 @@ def train():
         os.system('rm -rf '+path)
         os.system('rm -rf '+path[:-4])
         train_new(dataset)
-        return(f'<p>Successfully Trained {num_of_files} , added 1 class. </p>')
+        return(f'<p>Successfully Trained {num_of_files} images , added 1 class. </p>')
 
 if __name__ == '__main__':
     app.run()
