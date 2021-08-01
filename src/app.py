@@ -21,7 +21,7 @@ app.config['UPLOAD_FOLDER'] = './static/uploads'
 
 @app.route("/")
 def home():
-    return (render_template('home.html'))
+    return (render_template('home.html',classes = list(class_names.values()),num=num_of_classes))
 
 @app.route("/upload")
 def upload():
