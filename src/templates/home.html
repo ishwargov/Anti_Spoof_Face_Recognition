@@ -17,7 +17,7 @@
     <a type="button" href="/upload" class="btn btn-secondary">Predict</a>
     <a type="button" href="/upload_data" class="btn btn-success">Train</a>
 
-    <div class="list-group">
+    <div class="list-group"><button type="button" class="list-group-item list-group-item-action active">Current Classes</button>
       {% for name in classes %}
       <button type="button" class="list-group-item list-group-item-action">{{name}}</button>
       {% endfor %}
